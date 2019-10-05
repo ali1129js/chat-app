@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-04T10:17:34+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-04T11:00:43+02:00
+ * @Last modified time: 2019-10-05T10:29:22+02:00
  */
 const express = require("express");
 const socketio = require("socket.io");
@@ -16,12 +16,15 @@ const io = socketio(server);
 //socket.io has .on methode where we manage a new socket connection and its disconnect
 io.on("connection", socket => {
   const timestamp = Number(Date.now());
-  const lDate = new Date(timestamp);
-  console.log("we have a new connection!", lDate);
+  const tson = new Date(timestamp);
+  console.log("we have a new connection!", tson.toLocaleTimeString());
   socket.on("disconnect", () => {
-    console.log("User has left");
+    const timestamp2 = Number(Date.now());
+    const tsout = new Date(timestamp2);
+    console.log("User has left", tsout.toLocaleTimeString());
   });
 });
+
 app.use(router);
 
 server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
