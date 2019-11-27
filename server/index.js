@@ -2,10 +2,11 @@
  * @Author: Ali
  * @Date:   2019-10-04T10:17:34+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-07T08:10:47+02:00
+ * @Last modified time: 2019-11-27T06:57:35+01:00
  */
 const express = require("express");
 const socketio = require("socket.io");
+const cors = require("cors");
 const http = require("http");
 const router = require("./router");
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
@@ -13,8 +14,8 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+
 const server = http.createServer(app);
-console.log();
 const io = socketio(server);
 
 //socket.io has .on methode where we manage a new socket connection and its disconnect
@@ -41,7 +42,7 @@ io.on("connection", socket => {
   //User event
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
-
+    console.log(socket.id);
     io.to(user.room).emit("message", { user: user.name, text: message });
     callback();
   });
@@ -54,5 +55,5 @@ io.on("connection", socket => {
 });
 
 app.use(router);
-
+app.use(cors());
 server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

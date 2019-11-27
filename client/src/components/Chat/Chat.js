@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-04T10:05:44+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-07T08:55:42+02:00
+ * @Last modified time: 2019-11-27T07:13:52+01:00
  */
 import React,{ useState,useEffect} from 'react'
 import io from "socket.io-client";
@@ -41,6 +41,7 @@ const Chat = ({location}) => {
       socket.emit("disconnect")
       socket.off()
     }
+    //es-lint-disable-next-line
   },[ENDPOINT,location.search])
 
   // a second useEffect to handle messages
@@ -52,12 +53,11 @@ const Chat = ({location}) => {
   //function for sending setMessages
 const sendMessage = e => {
   e.preventDefault()
-  if(message){
+  if("messages: ",message){
     socket.emit('sendMessage',message,()=>setMessage(''))
   }
 }
-
-console.log(message,messages);
+console.log(messages);
   return (
     <div className="outerContainer">
       <div className="container">
@@ -67,8 +67,10 @@ console.log(message,messages);
           onKeyPress={e=>e.key==='Enter' ? sendMessage(e):null}
         />
       </div>
+      <h1></h1>
     </div>
   )
 }
 
 export default Chat
+//https://cors-anywhere.herokuapp.com/
